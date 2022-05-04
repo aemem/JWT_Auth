@@ -11,11 +11,12 @@ export const Home = () => {
 
   return (
     <div className="text-center">
+      <h1>HOME</h1>
       <Link to={"/signup"}>
-        <button>Sign Up</button>
+        <button className="btn btn-primary">Sign Up</button>
       </Link>
       <Link to={"/login"}>
-        <button>Log In</button>
+        <button className="btn btn-success">Log In</button>
       </Link>
     </div>
   );

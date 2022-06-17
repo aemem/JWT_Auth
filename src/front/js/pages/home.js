@@ -1,23 +1,25 @@
-import React, { useContext } from "react";
-import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
-import { Login } from "./login";
-import { Signup } from "./signup";
+import React from "react";
 import "../../styles/home.css";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export const Home = () => {
-  const { store, actions } = useContext(Context);
-
+  const history = useHistory();
   return (
     <div className="text-center">
       <h1>HOME</h1>
-      <Link to={"/signup"}>
-        <button className="btn btn-primary">Sign Up</button>
-      </Link>
-      <Link to={"/login"}>
-        <button className="btn btn-success">Log In</button>
-      </Link>
+
+      {localStorage.getItem("token") ? (
+        <div className="text-center">
+          <h1>Hello!</h1>
+          
+            <button className="btn btn-warning" onClick={()=>{history.push("/private")}}>Private</button>
+          
+        </div>
+      ) : (
+        <div className="text-center">
+          
+        </div>
+      )}
     </div>
   );
 };

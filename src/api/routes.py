@@ -4,6 +4,7 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User
 from api.utils import generate_sitemap, APIException
+from flask_jwt_extended import jwt_required, get_jwt_identity, create_access_token
 
 api = Blueprint('api', __name__)
 
@@ -17,6 +18,31 @@ def create_user():
         db.session.commit()
         return jsonify({"created": True, "user": new_user.serialize()}), 200
     else:
-        return jsonify({"created": False, "msg": "missing info"}), 200
+        return jsonify({"created": False, "msg": "missing info"}), 400
 
-  
+
+
+@api.route("/login", methods=["POST"])
+def login_user():
+    body_email = request.json.get("email")
+    body_password = request.json.get("password")
+    if body_email and body_password:
+        user = User.query.filter_by(email=body_email).filter_by(password=body_password).first()
+        if user:
+            token = create_access_token(identity=user.id)
+            return jsonify({"logged": True, "token": token, "user": user.email}), 200
+        else:
+            return jsonify({"logged": False, "msg": "wrong info"}), 400
+    else:
+        return jsonify({"logged": False, "msg": "missing info"}), 400
+    
+
+@api.route('/private', methods=['GET'])
+@jwt_required()
+def private_page(): 
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+    if user:
+        return jsonify({"msg": "Logged in"}), 200
+    else:
+        return jsonify({"msg": "Error"})   

@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Context } from "/workspace/react-flask-hello/src/front/js/store/appContext.js";
-import injectContext from "/workspace/react-flask-hello/src/front/js/store/appContext.js";
+import { Context } from "//workspace/JWT_Auth/src/front/js/store/appContext.js";
+import injectContext from "/workspace/JWT_Auth/src/front/js/store/appContext.js";
 
 export const Navbar = () => {
-	const { actions } = useContext(Context);
+	const { store } = useContext(Context);
 	return (
 		<nav className="navbar navbar-light bg-light">
 			<div className="container">
